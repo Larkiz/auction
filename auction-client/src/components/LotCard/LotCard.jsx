@@ -6,8 +6,15 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { lotModalOpen } from "../../redux/clientStore";
 
-export const LotCard = ({ data, lotOpen }) => {
+export const LotCard = ({ data }) => {
+  const dispatch = useDispatch();
+  function lotOpen(id) {
+    dispatch(lotModalOpen(id));
+  }
+
   return (
     <Card sx={{ width: 300, height: "100%" }}>
       <CardContent>

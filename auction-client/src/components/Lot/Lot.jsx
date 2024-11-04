@@ -1,6 +1,4 @@
 import {
-  AppBar,
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -16,18 +14,19 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { socket } from "../../connection/socket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserActions } from "./UserActions";
 import { UserCell } from "./UserCell";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { alreadyMember } from "./functions/alreadyMember";
 import { AuctionTitle } from "./AuctionTitle";
 import { OwnerActions } from "./OwnerActions";
+import { lotModalClose } from "../../redux/clientStore";
 
 const tableCellSx = { height: 90, width: 300, textAlign: "center" };
 const headCellSx = { textAlign: "center" };
 
-export const Lot = ({ open, lotClose }) => {
+export const Lot = () => {
   const [lotData, setLotData] = useState({ active: false });
   const [myRows, setMyRows] = useState([]);
 
@@ -74,6 +73,13 @@ export const Lot = ({ open, lotClose }) => {
     setLotData(res);
   }
 
+  const modalOpened = useSelector((state) => state.client.modals.lot);
+
+  const dispatch = useDispatch();
+  function lotClose(id) {
+    dispatch(lotModalClose(id));
+  }
+
   useEffect(() => {
     socket.on("room-check", lotChangeHandle);
     socket.on("room-change", lotChangeHandle);
@@ -85,10 +91,11 @@ export const Lot = ({ open, lotClose }) => {
       socket.off("room-check", lotChangeHandle);
       socket.off("room-change", lotChangeHandle);
     };
-  }, [open]);
+  }, [modalOpened]);
 
   const currentTurn = useRef(null);
 
+  // проверка на смену хода пользователя
   useEffect(() => {
     if (
       lotData?.members &&
@@ -103,8 +110,8 @@ export const Lot = ({ open, lotClose }) => {
 
   return (
     <Dialog
-      open={open}
-      onClose={lotClose}
+      open={modalOpened}
+      onClose={() => lotClose(lotData.id)}
       aria-labelledby="lot-dialog-title"
       aria-describedby="lot-dialog-description"
       fullScreen

@@ -6,9 +6,9 @@ export const UserActions = ({ submitChange }) => {
       <Button sx={actionsSx} variant="contained" onClick={submitChange}>
         Подтвердить
       </Button>
-      <Button sx={actionsSx} variant="contained" onClick={submitChange}>
+      {/* <Button sx={actionsSx} variant="contained" onClick={submitChange}>
         Пропустить
-      </Button>
+      </Button> */}
     </Stack>
   );
 };

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { socketConnect, socketConnected } from "../../redux/clientStore";
 import { socket } from "../../connection/socket";
 import { useNavigate } from "react-router";
-const dump = { tst: { id: null } };
+
 export const Auth = () => {
   const [name, setName] = useState("");
   const dispatch = useDispatch();

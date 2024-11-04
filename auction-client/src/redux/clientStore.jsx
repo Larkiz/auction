@@ -9,6 +9,7 @@ export const clientSlice = createSlice({
       id: null,
       lots: [],
     },
+    modals: { lot: false },
   },
   reducers: {
     socketConnect: (state, { payload }) => {
@@ -18,14 +19,25 @@ export const clientSlice = createSlice({
       state.data = payload;
     },
     createLot: (state, { payload }) => {
-      // console.log(payload);
-
       state.data.lots = [payload, ...state.data.lots];
+    },
+    lotModalOpen: (state, { payload }) => {
+      state.modals.lot = true;
+      socket.emit("room-check", { id: payload });
+    },
+    lotModalClose: (state, { payload }) => {
+      state.modals.lot = false;
+      socket.emit("room-leave", { id: payload });
     },
   },
 });
 
-export const { socketConnect, socketConnected, createLot } =
-  clientSlice.actions;
+export const {
+  socketConnect,
+  socketConnected,
+  createLot,
+  lotModalOpen,
+  lotModalClose,
+} = clientSlice.actions;
 
 export const { clientReducer: reducer } = clientSlice;
